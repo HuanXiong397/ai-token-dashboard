@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: ai-token-dashboard
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "4000"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DB_PATH
+        value: /app/data/dashboard.db
+      - key: CORS_ORIGIN
+        value: "*"
+    disk:
+      name: db-data
+      mountPath: /app/data
+      sizeGB: 1
+    healthCheckPath: /api/health

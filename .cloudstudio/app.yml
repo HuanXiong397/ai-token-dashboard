@@ -1,0 +1,32 @@
+name: ai-token-dashboard
+version: "1.0"
+
+# 构建配置
+build:
+  type: dockerfile
+  dockerfile: Dockerfile
+  context: .
+
+# 运行配置
+run:
+  port: 4000
+  command: "sh -c 'cd /app/server && node --experimental-sqlite --import tsx/esm src/db/seed.ts 2>/dev/null; node --experimental-sqlite --import tsx/esm src/index.ts'"
+
+# 环境变量
+env:
+  NODE_ENV: production
+  PORT: "4000"
+  JWT_SECRET: "ai-dashboard-secret-2026"
+  DB_PATH: /app/data/dashboard.db
+  CORS_ORIGIN: "*"
+
+# 健康检查
+healthCheck:
+  path: /api/health
+  initialDelaySeconds: 15
+  periodSeconds: 30
+
+# 存储（持久化数据库）
+volumes:
+  - name: db-data
+    mountPath: /app/data
