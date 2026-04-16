@@ -240,9 +240,10 @@ export default function DashboardPage() {
                     <Tooltip
                       contentStyle={{ backgroundColor: '#1E293B', borderColor: '#334155', borderRadius: '8px', color: '#fff' }}
                       itemStyle={{ color: '#E2E8F0' }}
-                      formatter={(v: number, name: string) =>
-                        name === 'tokens_m' ? [`${v}M`, 'Token用量'] : [`$${v}`, '费用']
-                      }
+                      formatter={(v: unknown, name: unknown) => {
+                        const val = v as number
+                        return name === 'tokens_m' ? [`${val}M`, 'Token用量'] : [`$${val}`, '费用']
+                      }}
                     />
                     <Area type="monotone" dataKey="tokens_m" stroke="#60A5FA" strokeWidth={3}
                           fillOpacity={1} fill="url(#gradTokens)" name="tokens_m" />
