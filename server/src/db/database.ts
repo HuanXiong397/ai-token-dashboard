@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
@@ -12,7 +12,7 @@ if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
-export const db = new Database(DB_PATH);
+export const db = new DatabaseSync(DB_PATH);
 
 // 开启 WAL 模式，提升并发读性能
 db.exec('PRAGMA journal_mode = WAL');
@@ -61,13 +61,13 @@ db.exec(`
   );
 `);
 
-// ─── 辅助函数（封装成 better-sqlite3 风格，方便迁移）──────────────
+// ─── 辅助函数（统一 API）──────────────────────────────
 export function prepare(sql: string) {
   const stmt = db.prepare(sql);
   return {
-    run: (...params: unknown[]) => stmt.run(...params as Parameters<typeof stmt.run>),
-    get: (...params: unknown[]) => stmt.get(...params as Parameters<typeof stmt.get>),
-    all: (...params: unknown[]) => stmt.all(...params as Parameters<typeof stmt.all>),
+    run: (...params: unknown[]) => stmt.run(...(params as unknown[])),
+    get: (...params: unknown[]) => stmt.get(...(params as unknown[])),
+    all: (...params: unknown[]) => stmt.all(...(params as unknown[])),
   };
 }
 
