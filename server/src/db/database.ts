@@ -1,4 +1,4 @@
-import { DatabaseSync } from 'node:sqlite';
+import Database from 'better-sqlite3';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
@@ -12,7 +12,7 @@ if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
-export const db = new DatabaseSync(DB_PATH);
+export const db = new Database(DB_PATH);
 
 // 开启 WAL 模式，提升并发读性能
 db.exec('PRAGMA journal_mode = WAL');

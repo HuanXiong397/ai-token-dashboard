@@ -10,6 +10,9 @@ RUN npm run build
 FROM node:22-alpine AS production
 WORKDIR /app
 
+# better-sqlite3 需要 native 编译工具
+RUN apk add --no-cache python3 make g++
+
 # 安装后端所有依赖（含 devDeps，因为需要 tsx 直接运行 TypeScript）
 COPY server/package*.json ./server/
 WORKDIR /app/server
@@ -34,4 +37,4 @@ ENV JWT_SECRET=change-me-in-production
 ENV CORS_ORIGIN=*
 
 # 启动：先 seed 数据库，再启动服务
-CMD ["sh", "-c", "cd /app/server && node --experimental-sqlite --import tsx/esm src/db/seed.ts 2>/dev/null; node --experimental-sqlite --import tsx/esm src/index.ts"]
+CMD ["sh", "-c", "cd /app/server && node --import tsx/esm src/db/seed.ts 2>/dev/null; node --import tsx/esm src/index.ts"]

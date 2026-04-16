@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node --experimental-sqlite --import tsx/esm src/index.ts",
+    "dev": "node --import tsx/esm src/index.ts",
     "dev:watch": "tsx --watch src/index.ts",
     "build": "tsc",
-    "start": "node --experimental-sqlite dist/index.js",
-    "seed": "node --experimental-sqlite --import tsx/esm src/db/seed.ts"
+    "start": "node --import tsx/esm src/index.ts",
+    "seed": "node --import tsx/esm src/db/seed.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^9.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.18.3",
@@ -18,10 +19,11 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/better-sqlite3": "^7.6.8",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.5",
-    "@types/node": "^20.11.5",
+    "@types/node": "^22.0.0",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3"
   }
